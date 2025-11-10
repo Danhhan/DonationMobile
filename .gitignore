@@ -101,3 +101,7 @@ app-dependency-graph.svg
 app-dependency-graph.png
 
 .env
+
+# Ruby / CocoaPods
+**/Pods/
+/vendor/bundle/
