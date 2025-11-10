@@ -1,6 +1,7 @@
 import { useMutation } from '@tanstack/react-query';
 
 import { MutationConfig } from '@/lib/reactQuery';
+import { IUser } from '@/types/auth';
 import { instance } from '@/utils/request/instance';
 
 export type AuthLoginRequest = {
@@ -11,6 +12,7 @@ export type AuthLoginRequest = {
 export type AuthLoginResponse = {
   token: string;
   refreshToken: string;
+  user: IUser;
 };
 
 const authLoginFn = async (

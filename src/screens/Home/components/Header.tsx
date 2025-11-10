@@ -1,18 +1,22 @@
+import { memo } from 'react';
 import { Image, ImageStyle, TextStyle, View, ViewStyle } from 'react-native';
 
 import { Text } from '@/components/Text';
+import { useAuth } from '@/context/AuthContext';
 import { useAppTheme } from '@/theme/context';
 import { ThemedStyle } from '@/theme/types';
 import { getFontFamily } from '@/theme/typography';
 
-export const Header: React.FC = () => {
+const Header: React.FC = () => {
   const { themed } = useAppTheme();
-
+  const { user } = useAuth();
   return (
     <View style={themed($header)}>
       <View>
         <Text style={themed($greeting)}>Hello,</Text>
-        <Text style={themed($userName)}>Azzahri A.👋 </Text>
+        <Text style={themed($userName)}>
+          {user?.firstName} {user?.lastName}.👋{' '}
+        </Text>
       </View>
       <Image
         source={require('@/assets/images/default_avatar.png')}
@@ -21,6 +25,8 @@ export const Header: React.FC = () => {
     </View>
   );
 };
+
+export default memo(Header);
 
 const $greeting: ThemedStyle<TextStyle> = ({ colors }) => ({
   color: colors.palette.neutral600,

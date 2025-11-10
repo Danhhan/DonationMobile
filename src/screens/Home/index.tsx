@@ -1,14 +1,15 @@
 import { useMemo, useState } from 'react';
-import { View, ViewStyle } from 'react-native';
+import { ScrollView, ViewStyle } from 'react-native';
 
 import Screen from '@/components/Screen';
 import { categories } from '@/mockData/categories';
+import { donations } from '@/mockData/donations';
 import { useAppTheme } from '@/theme/context';
 import { ThemedStyle } from '@/theme/types';
 
 import CategoryList from './components/CategoryList';
 import DonationCardList from './components/DonationCardList';
-import { Header } from './components/Header';
+import Header from './components/Header';
 import Hero from './components/Hero';
 import SearchField from './components/SearchField';
 
@@ -25,12 +26,24 @@ export const HomeScreen: React.FC<IHomeScreenProps> = () => {
     return categories;
   }, []);
 
+  const donationItems = useMemo(() => {
+    const filteredDonations = donations.filter(donation => {
+      return donation.categoryIds.includes(
+        categoryItems[selectedIdx].categoryId,
+      );
+    });
+    return filteredDonations;
+  }, [selectedIdx, categoryItems]);
+
   return (
     <Screen
       safeAreaEdges={['top', 'bottom']}
       backgroundColor={colors.palette.neutral100}
     >
-      <View style={themed($container)}>
+      <ScrollView
+        style={themed($container)}
+        showsVerticalScrollIndicator={false}
+      >
         <Header />
         <SearchField />
         <Hero />
@@ -39,8 +52,11 @@ export const HomeScreen: React.FC<IHomeScreenProps> = () => {
           selectedIdx={selectedIdx}
           setSelectedIdx={setSelectedIdx}
         />
-        <DonationCardList />
-      </View>
+        <DonationCardList
+          dataList={donationItems}
+          categoryList={categoryItems}
+        />
+      </ScrollView>
     </Screen>
   );
 };

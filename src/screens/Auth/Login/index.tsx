@@ -22,17 +22,16 @@ interface IErrorForm {
 }
 
 export const LoginScreen: FC<LoginScreenProps> = ({ navigation }) => {
-  const { setAuthToken } = useAuth();
+  const { setAuthToken, setUser } = useAuth();
   const { themed } = useAppTheme();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [isSubmitted, setIsSubmitted] = useState(false);
 
   const { mutateAsync: login, isPending } = useAuthLogin({
     mutationConfig: {
       onSuccess: data => {
-        console.log('data :', data);
         setAuthToken(data.token);
+        setUser(data?.user);
         Alert.alert('Success', 'Login successful');
       },
     },
@@ -58,11 +57,12 @@ export const LoginScreen: FC<LoginScreenProps> = ({ navigation }) => {
     return error;
   }, [email, password]);
 
-  const error = isSubmitted ? validationError : null;
+  const error = validationError;
 
   const onLogin = () => {
-    setIsSubmitted(true);
-    if (Object.keys(validationError).length > 0) return;
+    if (isPending || Object.keys(validationError).length > 0) {
+      return;
+    }
     login({ email, password });
   };
 

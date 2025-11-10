@@ -2,81 +2,95 @@ import { Image, ImageStyle, TextStyle, View, ViewStyle } from 'react-native';
 
 import { Text } from '@/components/Text';
 import { useAppTheme } from '@/theme/context';
+import { $styles } from '@/theme/styles';
 import { ThemedStyle } from '@/theme/types';
 import { getFontFamily } from '@/theme/typography';
+import { ICategory, IDonation } from '@/types/donation';
 
-interface IDonationCardListProps {}
+interface IDonationCardListProps {
+  dataList: IDonation[];
+  categoryList: ICategory[];
+}
 
-const DonationCardList: React.FC<IDonationCardListProps> = () => {
+const DonationCardList: React.FC<IDonationCardListProps> = ({
+  dataList,
+  categoryList,
+}) => {
   const { themed } = useAppTheme();
   return (
-    <View style={themed($wrapper)}>
-      <View style={themed($donationList)}>
-        <View style={themed($donationItem)}>
-          <View style={themed($donationImageContainer)}>
-            <View style={themed($categoryBadge)}>
-              <Text style={themed($categoryBadgeText)}>Category name</Text>
-            </View>
+    <View style={themed($donationList)}>
+      {dataList?.map(item => {
+        const { name, price, categoryIds, donationItemId, image } = item || {};
+
+        const category = categoryList.find(categoryItem =>
+          categoryIds?.includes(categoryItem.categoryId),
+        );
+
+        return (
+          <View key={donationItemId} style={themed($donationItem)}>
             <View>
+              {category && (
+                <View style={themed($categoryBadge)}>
+                  <Text style={themed($categoryBadgeText)}>
+                    {category.name}
+                  </Text>
+                </View>
+              )}
               <Image
+                resizeMode="cover"
                 source={{
-                  uri: 'https://images.unsplash.com/photo-1507697364665-69eec30ea71e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2371&q=80',
+                  uri: image,
                 }}
-                style={{
-                  height: 170,
-                  width: 155,
-                }}
+                style={themed($donationImage)}
               />
             </View>
+            <Text
+              numberOfLines={2}
+              ellipsizeMode="tail"
+              style={themed($donationName)}
+            >
+              {name}
+            </Text>
+            <Text style={themed($donationPrice)}>{price}</Text>
           </View>
-        </View>
-        <View style={themed($donationItem)}>
-          <View style={themed($donationImageContainer)}>
-            <View style={themed($categoryBadge)}>
-              <Text style={themed($categoryBadgeText)}>Category name</Text>
-            </View>
-            <View>
-              <Image
-                source={{
-                  uri: 'https://images.unsplash.com/photo-1507697364665-69eec30ea71e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2371&q=80',
-                }}
-                style={{
-                  height: 170,
-                  width: 155,
-                }}
-              />
-            </View>
-          </View>
-        </View>
-      </View>
+        );
+      })}
     </View>
   );
 };
 
-const $wrapper: ThemedStyle<ViewStyle> = () => ({
-  marginTop: 20,
+const $donationName: ThemedStyle<TextStyle> = ({ colors, spacing }) => ({
+  fontFamily: getFontFamily('SpaceGrotesk', '600'),
+  fontSize: 16,
+  color: colors.text,
+  marginTop: spacing.md,
+  width: '100%',
 });
 
-const $donationList: ThemedStyle<ViewStyle> = () => ({
-  flexDirection: 'row',
-  backgroundColor: 'red',
+const $donationPrice: ThemedStyle<TextStyle> = ({ colors }) => ({
+  fontFamily: getFontFamily('SpaceGrotesk', '600'),
+  fontSize: 16,
+  color: colors.palette.primary500,
+});
+
+const $donationList: ThemedStyle<ViewStyle> = ({ spacing }) => ({
+  marginTop: spacing.md,
+  ...$styles.row,
+  ...$styles.flexWrap,
+  justifyContent: 'space-between',
+  rowGap: spacing.md,
 });
 
 const $donationItem: ThemedStyle<ViewStyle> = () => ({
-  flexDirection: 'row',
-  // ...$styles.flex1,
-});
-
-const $donationImage: ThemedStyle<ImageStyle> = () => ({
-  height: 170,
+  width: '48%',
 });
 
 const $categoryBadge: ThemedStyle<ViewStyle> = ({ colors }) => ({
   backgroundColor: colors.palette.green900,
-  width: 84,
+  minWidth: 84,
   height: 22,
-  justifyContent: 'center',
-  alignItems: 'center',
+  paddingHorizontal: 10,
+  ...$styles.center,
   borderRadius: 50,
   position: 'absolute',
   top: 10,
@@ -90,10 +104,10 @@ const $categoryBadgeText: ThemedStyle<TextStyle> = ({ colors }) => ({
   fontFamily: getFontFamily('SpaceGrotesk', '600'),
 });
 
-const $donationImageContainer: ThemedStyle<ViewStyle> = () => ({
-  position: 'relative',
-  borderRadius: 30,
-  overflow: 'hidden',
+const $donationImage: ThemedStyle<ImageStyle> = () => ({
+  height: 170,
+  width: '100%',
+  borderRadius: 20,
 });
 
 export default DonationCardList;

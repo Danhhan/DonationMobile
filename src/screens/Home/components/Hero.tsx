@@ -6,7 +6,6 @@ import { ThemedStyle } from '@/theme/types';
 
 const Hero: React.FC = () => {
   const { themed } = useAppTheme();
-  console.log('Hero render');
   return (
     <View style={themed($hero)}>
       <Image

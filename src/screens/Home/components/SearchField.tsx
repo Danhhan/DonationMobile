@@ -1,8 +1,10 @@
+import { memo } from 'react';
 import { View, ViewStyle } from 'react-native';
 
 import { Icon } from '@/components/Icon';
 import { TextInput } from '@/components/TextInput';
 import { useAppTheme } from '@/theme/context';
+import { $styles } from '@/theme/styles';
 import { ThemedStyle } from '@/theme/types';
 
 const SearchField: React.FC = () => {
@@ -13,7 +15,7 @@ const SearchField: React.FC = () => {
   return (
     <View style={themed($container)}>
       <Icon icon="search" size={22} color={colors.palette.primary50} />
-      <TextInput placeholder="Search" />
+      <TextInput style={themed($styles.flex1)} placeholder="Search" />
     </View>
   );
 };
@@ -28,4 +30,4 @@ const $container: ThemedStyle<ViewStyle> = ({ spacing, colors }) => ({
   borderRadius: spacing.md,
 });
 
-export default SearchField;
+export default memo(SearchField);
