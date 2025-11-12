@@ -16,5 +16,6 @@ module.exports = {
         systemVars: true,
       },
     ],
+    'react-native-reanimated/plugin',
   ],
 };

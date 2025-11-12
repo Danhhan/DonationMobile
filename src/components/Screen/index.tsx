@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-shadow */
 import { ReactNode } from 'react';
 import {
   KeyboardAvoidingView,
@@ -77,12 +78,7 @@ const Screen: React.FC<IScreenProps> = props => {
       />
       <KeyboardAvoidingView
         {...KeyboardAvoidingViewProps}
-        behavior={
-          KeyboardAvoidingViewProps?.enabled === false
-            ? undefined
-            : KeyboardAvoidingViewProps?.behavior ??
-              (isIos ? 'padding' : 'height')
-        }
+        behavior={isIos ? 'padding' : 'height'}
         style={[$styles.flex1, KeyboardAvoidingViewProps?.style]}
       >
         {children}

@@ -3,43 +3,46 @@ import { useMutation } from '@tanstack/react-query';
 import { MutationConfig } from '@/lib/reactQuery';
 import { instance } from '@/lib/request/instance';
 import { ITokens, IUser } from '@/types/auth';
-import { IDataResponse } from '@/types/common';
 
-export type AuthLoginRequest = {
+export type AuthRegisterRequest = {
+  fullName: string;
   email: string;
   password: string;
+  bizName: string;
 };
 
-export type AuthLoginResponse = ITokens & {
+export type AuthRegisterResponse = ITokens & {
   user: IUser;
 };
 
-const authLoginFn = async (
-  data: AuthLoginRequest,
-): Promise<IDataResponse<AuthLoginResponse>> => {
+const authRegisterFn = async (
+  data: AuthRegisterRequest,
+): Promise<AuthRegisterResponse> => {
   try {
     const response = await instance
-      .post('v1/auth/login', {
+      .post('v1/auth/register-admin', {
         json: data,
       })
-      .json<IDataResponse<AuthLoginResponse>>();
+      .json<AuthRegisterResponse>();
     return response;
   } catch (error: any) {
     throw error;
   }
 };
 
-type UseAuthLoginOptions = {
-  mutationConfig?: MutationConfig<typeof authLoginFn>;
+type UseAuthRegisterOptions = {
+  mutationConfig?: MutationConfig<typeof authRegisterFn>;
 };
 
-export const useAuthLogin = ({ mutationConfig }: UseAuthLoginOptions = {}) => {
+export const useAuthRegister = ({
+  mutationConfig,
+}: UseAuthRegisterOptions = {}) => {
   const { onSuccess, ...restConfig } = mutationConfig || {};
   return useMutation({
     onSuccess: (...args) => {
       onSuccess?.(...args);
     },
     ...restConfig,
-    mutationFn: authLoginFn,
+    mutationFn: authRegisterFn,
   });
 };

@@ -8,8 +8,9 @@ export type AppStackParamList = {
   Login: undefined;
   Register: undefined;
   Home: undefined;
-  // 🔥 Your screens go here
-  // IGNITE_GENERATOR_ANCHOR_APP_STACK_PARAM_LIST
+  DonationDetail: undefined;
+  Settings: undefined;
+  Profile: undefined;
 };
 
 export type AppStackScreenProps<T extends keyof AppStackParamList> =

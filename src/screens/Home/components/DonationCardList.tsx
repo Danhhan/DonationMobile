@@ -1,4 +1,11 @@
-import { Image, ImageStyle, TextStyle, View, ViewStyle } from 'react-native';
+import {
+  Image,
+  ImageStyle,
+  Pressable,
+  TextStyle,
+  View,
+  ViewStyle,
+} from 'react-native';
 
 import { Text } from '@/components/Text';
 import { useAppTheme } from '@/theme/context';
@@ -10,11 +17,13 @@ import { ICategory, IDonation } from '@/types/donation';
 interface IDonationCardListProps {
   dataList: IDonation[];
   categoryList: ICategory[];
+  onPressDonationItem: () => void;
 }
 
 const DonationCardList: React.FC<IDonationCardListProps> = ({
   dataList,
   categoryList,
+  onPressDonationItem,
 }) => {
   const { themed } = useAppTheme();
   return (
@@ -27,7 +36,11 @@ const DonationCardList: React.FC<IDonationCardListProps> = ({
         );
 
         return (
-          <View key={donationItemId} style={themed($donationItem)}>
+          <Pressable
+            onPress={onPressDonationItem}
+            key={donationItemId}
+            style={themed($donationItem)}
+          >
             <View>
               {category && (
                 <View style={themed($categoryBadge)}>
@@ -52,7 +65,7 @@ const DonationCardList: React.FC<IDonationCardListProps> = ({
               {name}
             </Text>
             <Text style={themed($donationPrice)}>{price}</Text>
-          </View>
+          </Pressable>
         );
       })}
     </View>

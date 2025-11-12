@@ -1,10 +1,14 @@
+import { useEffect, useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
+import { AnimatedBootSplash } from '@/components/BootSplash';
 import { useAuth } from '@/context/AuthContext';
 import { LoginScreen } from '@/screens/Auth/Login';
 import { RegisterScreen } from '@/screens/Auth/Register';
+import DonationDetailScreen from '@/screens/Donation';
 import { HomeScreen } from '@/screens/Home';
+import SettingsScreen from '@/screens/Settings';
 import { useAppTheme } from '@/theme/context';
 
 import { AppStackParamList, NavigationProps } from './navigationTypes';
@@ -13,11 +17,29 @@ import { AppStackParamList, NavigationProps } from './navigationTypes';
 const Stack = createNativeStackNavigator<AppStackParamList>();
 
 const AppStack = () => {
-  const { isAuthenticated } = useAuth();
-
+  const { isAuthenticated, isLoaded } = useAuth();
+  const [visible, setVisible] = useState(true);
   const {
     theme: { colors },
   } = useAppTheme();
+
+  useEffect(() => {
+    if (isLoaded) {
+      setVisible(false);
+    }
+  }, [isLoaded]);
+
+  if (visible) {
+    return (
+      <AnimatedBootSplash
+        onAnimationEnd={() => {
+          if (!isLoaded) {
+            setVisible(false);
+          }
+        }}
+      />
+    );
+  }
 
   return (
     <Stack.Navigator
@@ -33,6 +55,12 @@ const AppStack = () => {
       {isAuthenticated && (
         <>
           <Stack.Screen name="Home" component={HomeScreen} />
+          <Stack.Screen
+            name="DonationDetail"
+            component={DonationDetailScreen}
+          />
+          <Stack.Screen name="Settings" component={SettingsScreen} />
+          {/* <Stack.Screen name="Profile" component={ProfileScreen} /> */}
         </>
       )}
       {!isAuthenticated && (
@@ -41,9 +69,6 @@ const AppStack = () => {
           <Stack.Screen name="Register" component={RegisterScreen} />
         </>
       )}
-
-      {/** 🔥 Your screens go here */}
-      {/* IGNITE_GENERATOR_ANCHOR_APP_STACK_SCREENS */}
     </Stack.Navigator>
   );
 };

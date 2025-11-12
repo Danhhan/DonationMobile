@@ -15,7 +15,11 @@ const SearchField: React.FC = () => {
   return (
     <View style={themed($container)}>
       <Icon icon="search" size={22} color={colors.palette.primary50} />
-      <TextInput style={themed($styles.flex1)} placeholder="Search" />
+      <TextInput
+        returnKeyType="search"
+        style={themed($styles.flex1)}
+        placeholder="Search"
+      />
     </View>
   );
 };

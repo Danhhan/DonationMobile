@@ -3,8 +3,7 @@ export interface IUser {
   email: string;
   provider: string;
   socialId: string | null;
-  firstName: string;
-  lastName: string;
+  fullName: string;
   role: {
     id: number;
     name: string;
@@ -18,4 +17,10 @@ export interface IUser {
   createdAt: string;
   updatedAt: string;
   deletedAt: string | null;
+}
+
+export interface ITokens {
+  token: string;
+  refreshToken: string;
+  tokenExpires: number;
 }

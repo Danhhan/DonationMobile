@@ -1,3 +1,5 @@
+import { TokensInfo } from './type';
+
 import { loadString, remove, saveString } from '.';
 
 const AUTH_LOGIN_STORAGE_KEY = 'authLogin';
@@ -18,13 +20,13 @@ export const loadAuthInfo = () => {
   return authInfo ? JSON.parse(authInfo) : null;
 };
 
-export const saveTokensInfo = (token: string) => {
-  saveString(AUTH_TOKEN_STORAGE_KEY, token);
+export const saveTokensInfo = (token: TokensInfo) => {
+  saveString(AUTH_TOKEN_STORAGE_KEY, JSON.stringify(token));
 };
 
 export const loadTokensInfo = () => {
   const tokensInfo = loadString(AUTH_TOKEN_STORAGE_KEY);
-  return tokensInfo ? JSON.parse(tokensInfo) : null;
+  return tokensInfo ? (JSON.parse(tokensInfo) as TokensInfo) : null;
 };
 
 export const removeTokensInfo = () => {

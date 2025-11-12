@@ -1,44 +1,78 @@
-import { FC, useMemo, useState } from 'react';
-import { Alert, View, ViewStyle } from 'react-native';
+import { FC, useEffect, useMemo, useState } from 'react';
+import { View, ViewStyle } from 'react-native';
+import { toast } from 'sonner-native';
 
 import { useAuthLogin } from '@/apis/auth/login';
 import Button from '@/components/Button';
 import { Input } from '@/components/Input';
 import PageHeader from '@/components/PageHeader';
 import Screen from '@/components/Screen';
+import HTTP_CODES_ENUM from '@/constants/httpCode';
 import { useAuth } from '@/context/AuthContext';
 import { AppStackScreenProps } from '@/navigators/navigationTypes';
 import { useAppTheme } from '@/theme/context';
 import { ThemedStyle } from '@/theme/types';
+import { IErrorForm } from '@/types/common';
+import { loadAuthInfo, saveAuthInfo } from '@/utils/storage/auth';
 
 import AuthContainer from '../components/AuthContainer';
 import AuthSwitchText from '../components/AuthSwitchText';
 
 interface LoginScreenProps extends AppStackScreenProps<'Login'> {}
 
-interface IErrorForm {
+interface IErrorValidate {
   email?: string;
   password?: string;
 }
 
 export const LoginScreen: FC<LoginScreenProps> = ({ navigation }) => {
-  const { setAuthToken, setUser } = useAuth();
+  const { setTokensInfo, setUser } = useAuth();
   const { themed } = useAppTheme();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [isSubmitted, setIsSubmitted] = useState(false);
+
+  useEffect(() => {
+    const authInfo = loadAuthInfo();
+    if (authInfo) {
+      setEmail(authInfo.email);
+      setPassword(authInfo.password);
+    }
+  }, []);
 
   const { mutateAsync: login, isPending } = useAuthLogin({
     mutationConfig: {
       onSuccess: data => {
-        setAuthToken(data.token);
-        setUser(data?.user);
-        Alert.alert('Success', 'Login successful');
+        const loginInfo = data?.data;
+        setTokensInfo({
+          token: loginInfo.token,
+          refreshToken: loginInfo.refreshToken,
+          tokenExpires: loginInfo.tokenExpires,
+        });
+        saveAuthInfo({
+          email,
+          password,
+        });
+        setUser(loginInfo?.user);
+      },
+      onError: (err: any) => {
+        if (err.statusCode === HTTP_CODES_ENUM.UNPROCESSABLE_ENTITY) {
+          const errorRes = (err as IErrorForm).errors;
+          if (errorRes) {
+            const errors = Object.entries(errorRes).map(([_, value]) => {
+              return value;
+            });
+            toast.error(errors.join(', '));
+            return;
+          }
+        }
+        toast.error(err?.message || 'Login failed');
       },
     },
   });
 
   const validationError = useMemo(() => {
-    const error: IErrorForm = {};
+    const error: IErrorValidate = {};
     if (!email || email.length === 0) {
       error.email = "can't be blank";
     }
@@ -51,18 +85,17 @@ export const LoginScreen: FC<LoginScreenProps> = ({ navigation }) => {
     if (!password || password.length === 0) {
       error.password = "can't be blank";
     }
-    if (password.length < 6) {
-      error.password = 'must be at least 6 characters';
-    }
     return error;
   }, [email, password]);
 
-  const error = validationError;
+  const errorForm = isSubmitted ? validationError : null;
 
   const onLogin = () => {
+    setIsSubmitted(true);
     if (isPending || Object.keys(validationError).length > 0) {
       return;
     }
+    setIsSubmitted(false);
     login({ email, password });
   };
 
@@ -77,7 +110,7 @@ export const LoginScreen: FC<LoginScreenProps> = ({ navigation }) => {
             placeholder="Email"
             onChangeText={val => setEmail(val)}
             value={email}
-            helper={error?.email}
+            helper={errorForm?.email}
           />
           <Input
             secureTextEntry
@@ -85,15 +118,21 @@ export const LoginScreen: FC<LoginScreenProps> = ({ navigation }) => {
             placeholder="Password"
             onChangeText={val => setPassword(val)}
             value={password}
-            helper={error?.password}
+            helper={errorForm?.password}
           />
         </View>
         <Button
+          isLoading={isPending}
           onPress={() => {
             onLogin();
+            // toast.error('Login failed');
+            // toast.success('exit animation bottom', {
+            //   position: 'bottom-center',
+            //   duration: 5000,
+            // });
           }}
         >
-          {isPending ? 'Logging in...' : 'Login'}
+          Login
         </Button>
         <AuthSwitchText
           onPress={() => navigation.navigate('Register')}

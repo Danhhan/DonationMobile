@@ -1,27 +1,27 @@
 import { memo } from 'react';
-import { Image, ImageStyle, TextStyle, View, ViewStyle } from 'react-native';
+import { TextStyle, View, ViewStyle } from 'react-native';
 
+import Avatar from '@/components/Avatar';
 import { Text } from '@/components/Text';
 import { useAuth } from '@/context/AuthContext';
 import { useAppTheme } from '@/theme/context';
 import { ThemedStyle } from '@/theme/types';
 import { getFontFamily } from '@/theme/typography';
 
-const Header: React.FC = () => {
+interface IHeaderProps {
+  onNavigateProfile: () => void;
+}
+
+const Header: React.FC<IHeaderProps> = ({ onNavigateProfile }) => {
   const { themed } = useAppTheme();
   const { user } = useAuth();
   return (
     <View style={themed($header)}>
       <View>
         <Text style={themed($greeting)}>Hello,</Text>
-        <Text style={themed($userName)}>
-          {user?.firstName} {user?.lastName}.👋{' '}
-        </Text>
+        <Text style={themed($userName)}>{user?.fullName}.👋 </Text>
       </View>
-      <Image
-        source={require('@/assets/images/default_avatar.png')}
-        style={themed($avatar)}
-      />
+      <Avatar onNavigateProfile={onNavigateProfile} />
     </View>
   );
 };
@@ -37,12 +37,6 @@ const $userName: ThemedStyle<TextStyle> = ({ colors }) => ({
   color: colors.palette.neutral900,
   fontFamily: getFontFamily('SpaceGrotesk', '600'),
   fontSize: 24,
-});
-
-const $avatar: ThemedStyle<ImageStyle> = ({ spacing }) => ({
-  width: 50,
-  height: 50,
-  borderRadius: spacing.md,
 });
 
 const $header: ThemedStyle<ViewStyle> = ({ spacing }) => ({
