@@ -37,7 +37,6 @@ export const AuthProvider: FC<PropsWithChildren<AuthProviderProps>> = ({
 }) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [user, setUser] = useState<IUser | null>(null);
-  console.log('user :', user);
 
   const setTokensInfo = useCallback((tokensInfo: TokensInfo) => {
     setTokensInfoToStorage(tokensInfo);
@@ -60,7 +59,7 @@ export const AuthProvider: FC<PropsWithChildren<AuthProviderProps>> = ({
     try {
       if (tokens?.token) {
         const response = await getAuthMeFn();
-        setUser(response);
+        setUser(response?.data);
       }
     } catch (error: any) {
       if (error?.response?.status === HTTP_CODES_ENUM.UNAUTHORIZED) {

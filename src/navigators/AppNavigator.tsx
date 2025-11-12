@@ -6,12 +6,11 @@ import { AnimatedBootSplash } from '@/components/BootSplash';
 import { useAuth } from '@/context/AuthContext';
 import { LoginScreen } from '@/screens/Auth/Login';
 import { RegisterScreen } from '@/screens/Auth/Register';
-import DonationDetailScreen from '@/screens/Donation';
-import { HomeScreen } from '@/screens/Home';
-import SettingsScreen from '@/screens/Settings';
+import ProfileScreen from '@/screens/Profile';
 import { useAppTheme } from '@/theme/context';
 
 import { AppStackParamList, NavigationProps } from './navigationTypes';
+import { TabsNavigator } from './TabsNavigator';
 
 // Documentation: https://reactnavigation.org/docs/stack-navigator/
 const Stack = createNativeStackNavigator<AppStackParamList>();
@@ -50,17 +49,20 @@ const AppStack = () => {
           backgroundColor: colors.background,
         },
       }}
-      initialRouteName={isAuthenticated ? 'Home' : 'Login'}
+      initialRouteName={isAuthenticated ? 'Tabs' : 'Login'}
     >
       {isAuthenticated && (
         <>
-          <Stack.Screen name="Home" component={HomeScreen} />
+          <Stack.Screen name="Tabs" component={TabsNavigator} />
+          {/* <Stack.Screen name="Home" component={HomeScreen} />
           <Stack.Screen
             name="DonationDetail"
             component={DonationDetailScreen}
           />
-          <Stack.Screen name="Settings" component={SettingsScreen} />
+          <Stack.Screen name="Settings" component={SettingsScreen} /> */}
           {/* <Stack.Screen name="Profile" component={ProfileScreen} /> */}
+          {/* <Stack.Screen name="Settings" component={SettingsScreen} /> */}
+          <Stack.Screen name="Profile" component={ProfileScreen} />
         </>
       )}
       {!isAuthenticated && (

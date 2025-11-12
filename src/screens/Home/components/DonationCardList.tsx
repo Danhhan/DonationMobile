@@ -17,13 +17,11 @@ import { ICategory, IDonation } from '@/types/donation';
 interface IDonationCardListProps {
   dataList: IDonation[];
   categoryList: ICategory[];
-  onPressDonationItem: () => void;
 }
 
 const DonationCardList: React.FC<IDonationCardListProps> = ({
   dataList,
   categoryList,
-  onPressDonationItem,
 }) => {
   const { themed } = useAppTheme();
   return (
@@ -36,11 +34,7 @@ const DonationCardList: React.FC<IDonationCardListProps> = ({
         );
 
         return (
-          <Pressable
-            onPress={onPressDonationItem}
-            key={donationItemId}
-            style={themed($donationItem)}
-          >
+          <Pressable key={donationItemId} style={themed($donationItem)}>
             <View>
               {category && (
                 <View style={themed($categoryBadge)}>

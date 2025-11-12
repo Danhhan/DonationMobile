@@ -8,11 +8,7 @@ import { useAppTheme } from '@/theme/context';
 import { ThemedStyle } from '@/theme/types';
 import { getFontFamily } from '@/theme/typography';
 
-interface IHeaderProps {
-  onNavigateProfile: () => void;
-}
-
-const Header: React.FC<IHeaderProps> = ({ onNavigateProfile }) => {
+const Header: React.FC = () => {
   const { themed } = useAppTheme();
   const { user } = useAuth();
   return (
@@ -21,7 +17,7 @@ const Header: React.FC<IHeaderProps> = ({ onNavigateProfile }) => {
         <Text style={themed($greeting)}>Hello,</Text>
         <Text style={themed($userName)}>{user?.fullName}.👋 </Text>
       </View>
-      <Avatar onNavigateProfile={onNavigateProfile} />
+      <Avatar />
     </View>
   );
 };

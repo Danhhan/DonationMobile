@@ -1,36 +1,48 @@
 import { FC } from 'react';
-import { Alert, TouchableOpacity, View, ViewStyle } from 'react-native';
+import { Pressable, View, ViewStyle } from 'react-native';
 
 import { Icon, IconTypes } from '@/components/Icon';
 import { Text } from '@/components/Text';
 import { useAppTheme } from '@/theme/context';
 import { ThemedStyle } from '@/theme/types';
-import hexToRgba from '@/utils/hexToRgba';
 
 interface IMenuItemProps {
   title: string;
   icon: IconTypes;
-  isLast?: boolean;
+  onPress?: () => void;
 }
 
-export const MenuItem: FC<IMenuItemProps> = ({ title, icon, isLast }) => {
+export const MenuItem: FC<IMenuItemProps> = ({ title, icon, onPress }) => {
   const {
     themed,
     theme: { colors },
   } = useAppTheme();
 
   return (
-    <TouchableOpacity onPress={() => Alert.alert('Not implemented')}>
-      <View style={themed([$item, !isLast && $borderBottom])}>
-        <View style={themed([$leftContent])}>
-          <Icon color={colors.palette.neutral600} icon={icon} size={18} />
-          <Text weight="medium" size="sm">
-            {title}
-          </Text>
+    <Pressable onPress={onPress}>
+      {({ pressed }) => (
+        <View style={themed([$item, pressed && $pressedItem])}>
+          <View style={themed([$leftContent])}>
+            <Icon
+              icon={icon}
+              size={18}
+              color={
+                pressed ? colors.palette.primary50 : colors.palette.neutral600
+              }
+            />
+            <Text
+              weight="medium"
+              size="xs"
+              style={{
+                color: colors.palette.neutral600,
+              }}
+            >
+              {title}
+            </Text>
+          </View>
         </View>
-        <Icon color={colors.palette.neutral600} icon="arrowRight" size={18} />
-      </View>
-    </TouchableOpacity>
+      )}
+    </Pressable>
   );
 };
 
@@ -39,13 +51,13 @@ const $item: ThemedStyle<ViewStyle> = ({ spacing }) => ({
   justifyContent: 'space-between',
   alignItems: 'center',
   gap: spacing.md,
-  paddingHorizontal: spacing.md,
-  paddingVertical: spacing.sm,
+  paddingHorizontal: spacing.xs,
+  paddingVertical: spacing.xs + spacing.xxs,
+  borderRadius: spacing.xs,
 });
 
-const $borderBottom: ThemedStyle<ViewStyle> = ({ colors }) => ({
-  borderBottomWidth: 1,
-  borderBottomColor: hexToRgba(colors.border, 0.3),
+const $pressedItem: ThemedStyle<ViewStyle> = ({ colors }) => ({
+  backgroundColor: colors.palette.neutral200,
 });
 
 const $leftContent: ThemedStyle<ViewStyle> = ({ spacing }) => ({

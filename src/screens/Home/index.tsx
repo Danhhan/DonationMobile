@@ -16,7 +16,7 @@ import SearchField from './components/SearchField';
 
 interface IHomeScreenProps extends AppStackScreenProps<'Home'> {}
 
-export const HomeScreen: React.FC<IHomeScreenProps> = ({ navigation }) => {
+export const HomeScreen: React.FC<IHomeScreenProps> = () => {
   const {
     themed,
     theme: { colors },
@@ -37,19 +37,12 @@ export const HomeScreen: React.FC<IHomeScreenProps> = ({ navigation }) => {
   }, [selectedIdx, categoryItems]);
 
   return (
-    <Screen
-      safeAreaEdges={['top', 'bottom']}
-      backgroundColor={colors.palette.neutral100}
-    >
+    <Screen safeAreaEdges={['top']} backgroundColor={colors.palette.neutral100}>
       <ScrollView
         style={themed($container)}
         showsVerticalScrollIndicator={false}
       >
-        <Header
-          onNavigateProfile={() => {
-            navigation.navigate('Settings');
-          }}
-        />
+        <Header />
         <SearchField />
         <Hero />
         <CategoryList
@@ -60,9 +53,6 @@ export const HomeScreen: React.FC<IHomeScreenProps> = ({ navigation }) => {
         <DonationCardList
           dataList={donationItems}
           categoryList={categoryItems}
-          onPressDonationItem={() => {
-            navigation.navigate('DonationDetail');
-          }}
         />
       </ScrollView>
     </Screen>

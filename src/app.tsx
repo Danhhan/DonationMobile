@@ -22,6 +22,9 @@ function App() {
             <AuthProvider>
               <ThemeProvider>
                 <AppNavigator />
+                {/* <NavigationContainer>
+                  <TabsNavigator />
+                </NavigationContainer> */}
                 <Toaster />
               </ThemeProvider>
             </AuthProvider>

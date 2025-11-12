@@ -1,19 +1,19 @@
-import { ScrollView, View, ViewStyle } from 'react-native';
+import { Alert, ScrollView, TextStyle, View, ViewStyle } from 'react-native';
 
-import { PressableIcon } from '@/components/Icon';
 import Screen from '@/components/Screen';
 import { Text } from '@/components/Text';
 import { AppStackScreenProps } from '@/navigators/navigationTypes';
 import { useAppTheme } from '@/theme/context';
 import { $styles } from '@/theme/styles';
 import { ThemedStyle } from '@/theme/types';
+import hexToRgba from '@/utils/hexToRgba';
 
+import Header from './components/Header';
 import { LogoutItem } from './components/LogoutItem';
 import { MenuItem } from './components/MenuItem';
-import UserInfo from './components/UserInfo';
-import { accountItems, activityItems } from './constants';
+import { ACCOUNT_ITEMS, ACTIVITY_ITEMS, MENU_VALUES } from './constants';
 
-interface ISettingsScreenProps extends AppStackScreenProps<'Settings'> {}
+interface ISettingsScreenProps extends AppStackScreenProps<'Account'> {}
 
 const SettingsScreen: React.FC<ISettingsScreenProps> = ({ navigation }) => {
   const {
@@ -22,87 +22,76 @@ const SettingsScreen: React.FC<ISettingsScreenProps> = ({ navigation }) => {
   } = useAppTheme();
 
   return (
-    <Screen safeAreaEdges={['top']} backgroundColor={colors.palette.neutral100}>
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={[$styles.flex, $styles.flex1]}
-      >
-        <View
-          style={themed(({ spacing }) => ({
-            paddingHorizontal: spacing.md,
-          }))}
+    <Screen safeAreaEdges={['top']} backgroundColor={colors.background}>
+      <View style={themed($container)}>
+        <Header />
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={[$styles.flex, $styles.flex1]}
         >
-          <PressableIcon
-            size={24}
-            icon="back"
-            onPress={() => navigation.goBack()}
-          />
-          <UserInfo />
-        </View>
-        <View style={themed($content)}>
-          <Text
-            style={themed(() => ({
-              color: colors.palette.neutral600,
-            }))}
-            weight="medium"
-            size="xs"
-            textTransform="uppercase"
-          >
+          <Text style={themed($cardTitle)} weight="medium" size="xxs">
             Account
           </Text>
           <View style={themed($card)}>
-            {accountItems.map(item => (
-              <MenuItem
-                key={item.title}
-                icon={item.icon}
-                title={item.title}
-                isLast={item.isLast}
-              />
-            ))}
+            {ACCOUNT_ITEMS.map(item => {
+              return (
+                <MenuItem
+                  key={item.title}
+                  icon={item.icon}
+                  title={item.title}
+                  onPress={() => {
+                    console.log(item.value);
+                    if (item.value === MENU_VALUES.PROFILE) {
+                      navigation.navigate('Profile');
+                      return;
+                    }
+                    Alert.alert('Not implemented');
+                  }}
+                />
+              );
+            })}
           </View>
-
-          <Text
-            style={themed(() => ({
-              color: colors.palette.neutral600,
-            }))}
-            weight="medium"
-            size="xs"
-            textTransform="uppercase"
-          >
-            Activity
+          <View style={themed($borderBottom)} />
+          <Text style={themed($cardTitle)} weight="medium" size="xs">
+            General
           </Text>
           <View style={themed($card)}>
-            {activityItems.map(item => (
+            {ACTIVITY_ITEMS.map(item => (
               <MenuItem
                 key={item.title}
                 icon={item.icon}
                 title={item.title}
-                isLast={item.isLast}
+                onPress={() => {
+                  Alert.alert('Not implemented');
+                }}
               />
             ))}
-          </View>
-
-          <View style={themed($card)}>
             <LogoutItem />
           </View>
-        </View>
-      </ScrollView>
+        </ScrollView>
+      </View>
     </Screen>
   );
 };
 
-const $content: ThemedStyle<ViewStyle> = ({ colors, spacing }) => ({
-  backgroundColor: colors.palette.neutral200,
-  ...$styles.flex1,
-  paddingVertical: spacing.md,
-  paddingHorizontal: spacing.md,
+const $cardTitle: ThemedStyle<TextStyle> = ({ spacing, colors }) => ({
+  color: colors.palette.neutral600,
+  marginTop: spacing.md,
 });
 
-const $card: ThemedStyle<ViewStyle> = ({ colors, spacing }) => ({
-  backgroundColor: colors.palette.neutral100,
-  borderRadius: spacing.sm,
-  marginTop: spacing.sm,
-  marginBottom: spacing.md,
+const $borderBottom: ThemedStyle<ViewStyle> = ({ colors, spacing }) => ({
+  borderBottomWidth: 1,
+  borderBottomColor: hexToRgba(colors.border, 0.3),
+  paddingBottom: spacing.md,
+});
+
+const $container: ThemedStyle<ViewStyle> = ({ spacing }) => ({
+  paddingHorizontal: spacing.md,
+  ...$styles.flex1,
+});
+
+const $card: ThemedStyle<ViewStyle> = ({ spacing }) => ({
+  marginTop: spacing.xs,
 });
 
 export default SettingsScreen;
