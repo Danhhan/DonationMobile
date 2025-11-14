@@ -4,7 +4,7 @@ import { KeyboardProvider } from 'react-native-keyboard-controller';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Toaster } from 'sonner-native';
 
-import { AuthProvider } from './context/AuthContext';
+import { AuthProvider } from './context/AuthProvider';
 import { queryConfig } from './lib/reactQuery';
 import { AppNavigator } from './navigators/AppNavigator';
 import { ThemeProvider } from './theme/context';
