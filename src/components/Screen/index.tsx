@@ -49,7 +49,7 @@ interface IScreenProps {
 
 const isIos = Platform.OS === 'ios';
 
-const Screen: React.FC<IScreenProps> = props => {
+const Screen = (props: IScreenProps) => {
   const {
     children,
     backgroundColor,
@@ -83,6 +83,7 @@ const Screen: React.FC<IScreenProps> = props => {
       >
         {children}
       </KeyboardAvoidingView>
+      {/* {children} */}
     </View>
   );
 };

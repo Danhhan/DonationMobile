@@ -1,4 +1,4 @@
-import { FC, useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { View, ViewStyle } from 'react-native';
 import { toast } from 'sonner-native';
 
@@ -25,7 +25,7 @@ interface IErrorValidate {
   password?: string;
 }
 
-export const LoginScreen: FC<LoginScreenProps> = ({ navigation }) => {
+export const LoginScreen = ({ navigation }: LoginScreenProps) => {
   const { setTokensInfo, setUser } = useAuth();
   const { themed } = useAppTheme();
   const [email, setEmail] = useState('');
@@ -121,19 +121,11 @@ export const LoginScreen: FC<LoginScreenProps> = ({ navigation }) => {
             helper={errorForm?.password}
           />
         </View>
-        <Button
-          isLoading={isPending}
-          onPress={() => {
-            onLogin();
-            // toast.error('Login failed');
-            // toast.success('exit animation bottom', {
-            //   position: 'bottom-center',
-            //   duration: 5000,
-            // });
-          }}
-        >
-          Login
-        </Button>
+        <View style={themed($button)}>
+          <Button isLoading={isPending} onPress={onLogin}>
+            Login
+          </Button>
+        </View>
         <AuthSwitchText
           onPress={() => navigation.navigate('Register')}
           title="Don't have an account?"
@@ -142,6 +134,10 @@ export const LoginScreen: FC<LoginScreenProps> = ({ navigation }) => {
     </Screen>
   );
 };
+
+const $button: ThemedStyle<ViewStyle> = ({ spacing }) => ({
+  marginBottom: spacing.md,
+});
 
 const $form: ThemedStyle<ViewStyle> = ({ spacing }) => ({
   marginTop: spacing.lg,

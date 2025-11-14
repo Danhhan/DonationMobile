@@ -9,7 +9,7 @@ interface IAuthSwitchTextProps {
   title: string;
 }
 
-const AuthSwitchText: React.FC<IAuthSwitchTextProps> = ({ onPress, title }) => {
+const AuthSwitchText = ({ onPress, title }: IAuthSwitchTextProps) => {
   const { themed } = useAppTheme();
   return (
     <TouchableOpacity onPress={onPress}>
@@ -18,8 +18,7 @@ const AuthSwitchText: React.FC<IAuthSwitchTextProps> = ({ onPress, title }) => {
   );
 };
 
-const $text: ThemedStyle<TextStyle> = ({ spacing, typography, colors }) => ({
-  marginTop: spacing.lg,
+const $text: ThemedStyle<TextStyle> = ({ typography, colors }) => ({
   textAlign: 'center',
   fontFamily: typography.primary.medium,
   fontSize: 16,

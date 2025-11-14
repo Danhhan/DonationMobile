@@ -8,10 +8,7 @@ interface IAuthContainerProps {
   justifyContent?: ViewStyle['justifyContent'];
 }
 
-const AuthContainer: React.FC<IAuthContainerProps> = ({
-  children,
-  justifyContent,
-}) => {
+const AuthContainer = ({ children, justifyContent }: IAuthContainerProps) => {
   const { themed } = useAppTheme();
   return (
     <ScrollView

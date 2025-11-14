@@ -34,7 +34,7 @@ export const MenuItem: FC<IMenuItemProps> = ({ title, icon, onPress }) => {
               weight="medium"
               size="xs"
               style={{
-                color: colors.palette.neutral600,
+                color: colors.palette.neutral900,
               }}
             >
               {title}

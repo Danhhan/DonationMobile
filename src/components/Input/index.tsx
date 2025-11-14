@@ -1,4 +1,3 @@
-import { FC } from 'react';
 import { View, TextStyle, TextInputProps, ViewStyle } from 'react-native';
 
 import { useAppTheme } from '@/theme/context';
@@ -13,7 +12,7 @@ interface IInputProps extends TextInputProps {
   helper?: string;
 }
 
-export const Input: FC<IInputProps> = ({ label, helper, ...props }) => {
+export const Input = ({ label, helper, ...props }: IInputProps) => {
   const { themed } = useAppTheme();
   return (
     <View style={themed($container)}>

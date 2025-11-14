@@ -7,7 +7,6 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
 // App Stack Navigator types
 export type AppStackParamList = {
-  Welcome: undefined;
   Login: undefined;
   Register: undefined;
   Home: undefined;

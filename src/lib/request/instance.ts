@@ -24,6 +24,9 @@ export const createInstance = () => {
           if (tokens?.token) {
             request.headers.set('Authorization', `Bearer ${tokens?.token}`);
           }
+          if (__DEV__ && process.env.OFFLINE_MODE === 'true') {
+            throw new Error('Network offline (simulated)');
+          }
         },
       ],
       afterResponse: [

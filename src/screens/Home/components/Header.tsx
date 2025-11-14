@@ -8,7 +8,7 @@ import { useAppTheme } from '@/theme/context';
 import { ThemedStyle } from '@/theme/types';
 import { getFontFamily } from '@/theme/typography';
 
-const Header: React.FC = () => {
+const Header = () => {
   const { themed } = useAppTheme();
   const { user } = useAuth();
   return (

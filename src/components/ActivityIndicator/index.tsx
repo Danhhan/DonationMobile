@@ -23,7 +23,7 @@ type ActivityIndicatorProps = {
   extraSmall?: boolean;
 };
 
-function ActivityIndicator({
+const ActivityIndicator = ({
   color,
   size = 'small',
   style,
@@ -31,7 +31,7 @@ function ActivityIndicator({
   hidesWhenStopped = true,
   testID,
   extraSmall,
-}: ActivityIndicatorProps) {
+}: ActivityIndicatorProps) => {
   const {
     theme: { colors },
   } = useAppTheme();
@@ -49,6 +49,6 @@ function ActivityIndicator({
       hidesWhenStopped={hidesWhenStopped}
     />
   );
-}
+};
 
 export default ActivityIndicator;

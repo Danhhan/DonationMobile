@@ -7,9 +7,7 @@ import Screen from '../Screen';
 
 import ActivityIndicator from '.';
 
-interface IFullScreenLoaderProps {}
-
-const FullScreenLoader: React.FC<IFullScreenLoaderProps> = () => {
+const FullScreenLoader = () => {
   const { themed } = useAppTheme();
   return (
     <Screen safeAreaEdges={['top', 'bottom']}>

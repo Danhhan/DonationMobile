@@ -9,7 +9,7 @@ import { TabsParamList } from './navigationTypes';
 
 const Tab = createBottomTabNavigator<TabsParamList>();
 
-function renderTabIcon({
+const renderTabIcon = ({
   route,
   color,
   size,
@@ -17,7 +17,7 @@ function renderTabIcon({
   route: RouteProp<TabsParamList, keyof TabsParamList>;
   color: string;
   size: number;
-}) {
+}) => {
   let iconName: IconTypes;
 
   switch (route.name) {
@@ -32,8 +32,8 @@ function renderTabIcon({
   }
 
   return <Icon icon={iconName} size={size} color={color} />;
-}
-function TabsNavigator() {
+};
+const TabsNavigator = () => {
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
@@ -47,6 +47,6 @@ function TabsNavigator() {
       <Tab.Screen name="Account" component={SettingsScreen} />
     </Tab.Navigator>
   );
-}
+};
 
 export { TabsNavigator };

@@ -1,4 +1,4 @@
-import { FC, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { View, ViewStyle } from 'react-native';
 import { toast } from 'sonner-native';
 
@@ -24,7 +24,7 @@ interface IErrorFormValues {
 }
 
 interface RegisterScreenProps extends AppStackScreenProps<'Register'> {}
-export const RegisterScreen: FC<RegisterScreenProps> = ({ navigation }) => {
+export const RegisterScreen = ({ navigation }: RegisterScreenProps) => {
   const { themed } = useAppTheme();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -122,11 +122,13 @@ export const RegisterScreen: FC<RegisterScreenProps> = ({ navigation }) => {
               helper={error?.password}
             />
           </View>
-          <Button isLoading={isPending} onPress={onRegister}>
-            Register
-          </Button>
+          <View style={themed($button)}>
+            <Button isLoading={isPending} onPress={onRegister}>
+              Register
+            </Button>
+          </View>
           <AuthSwitchText
-            onPress={() => navigation.navigate('Login')}
+            onPress={() => navigation.goBack()}
             title="Already have an account?"
           />
         </View>
@@ -143,4 +145,8 @@ const $formContainer: ThemedStyle<ViewStyle> = () => ({
 const $form: ThemedStyle<ViewStyle> = ({ spacing }) => ({
   marginTop: spacing.lg,
   marginBottom: spacing.xxl,
+});
+
+const $button: ThemedStyle<ViewStyle> = ({ spacing }) => ({
+  marginBottom: spacing.md,
 });

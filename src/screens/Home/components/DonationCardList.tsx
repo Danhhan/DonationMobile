@@ -19,10 +19,10 @@ interface IDonationCardListProps {
   categoryList: ICategory[];
 }
 
-const DonationCardList: React.FC<IDonationCardListProps> = ({
+const DonationCardList = ({
   dataList,
   categoryList,
-}) => {
+}: IDonationCardListProps) => {
   const { themed } = useAppTheme();
   return (
     <View style={themed($donationList)}>

@@ -4,7 +4,6 @@ import { ScrollView, ViewStyle } from 'react-native';
 import Screen from '@/components/Screen';
 import { categories } from '@/mockData/categories';
 import { donations } from '@/mockData/donations';
-import { AppStackScreenProps } from '@/navigators/navigationTypes';
 import { useAppTheme } from '@/theme/context';
 import { ThemedStyle } from '@/theme/types';
 
@@ -14,9 +13,7 @@ import Header from './components/Header';
 import Hero from './components/Hero';
 import SearchField from './components/SearchField';
 
-interface IHomeScreenProps extends AppStackScreenProps<'Home'> {}
-
-export const HomeScreen: React.FC<IHomeScreenProps> = () => {
+export const HomeScreen = () => {
   const {
     themed,
     theme: { colors },

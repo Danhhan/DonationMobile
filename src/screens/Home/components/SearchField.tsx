@@ -7,7 +7,7 @@ import { useAppTheme } from '@/theme/context';
 import { $styles } from '@/theme/styles';
 import { ThemedStyle } from '@/theme/types';
 
-const SearchField: React.FC = () => {
+const SearchField = () => {
   const {
     themed,
     theme: { colors },

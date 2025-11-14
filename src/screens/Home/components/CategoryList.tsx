@@ -18,11 +18,11 @@ interface ICategoryListProps {
   setSelectedIdx: (idx: number) => void;
 }
 
-const CategoryList: React.FC<ICategoryListProps> = ({
+const CategoryList = ({
   dataList,
   selectedIdx,
   setSelectedIdx,
-}) => {
+}: ICategoryListProps) => {
   const { themed } = useAppTheme();
   return (
     <View>

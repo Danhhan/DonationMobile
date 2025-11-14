@@ -9,7 +9,7 @@ interface IPageHeaderProps {
   title: string;
 }
 
-const PageHeader: React.FC<IPageHeaderProps> = ({ title }) => {
+const PageHeader = ({ title }: IPageHeaderProps) => {
   const { themed } = useAppTheme();
 
   return <Text style={themed($title)}>{title}</Text>;

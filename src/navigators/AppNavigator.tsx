@@ -6,7 +6,7 @@ import { AnimatedBootSplash } from '@/components/BootSplash';
 import { useAuth } from '@/context/AuthContext';
 import { LoginScreen } from '@/screens/Auth/Login';
 import { RegisterScreen } from '@/screens/Auth/Register';
-import ProfileScreen from '@/screens/Profile';
+import ProfileScreen from '@/screens/Settings/Profile';
 import { useAppTheme } from '@/theme/context';
 
 import { AppStackParamList, NavigationProps } from './navigationTypes';
@@ -54,14 +54,6 @@ const AppStack = () => {
       {isAuthenticated && (
         <>
           <Stack.Screen name="Tabs" component={TabsNavigator} />
-          {/* <Stack.Screen name="Home" component={HomeScreen} />
-          <Stack.Screen
-            name="DonationDetail"
-            component={DonationDetailScreen}
-          />
-          <Stack.Screen name="Settings" component={SettingsScreen} /> */}
-          {/* <Stack.Screen name="Profile" component={ProfileScreen} /> */}
-          {/* <Stack.Screen name="Settings" component={SettingsScreen} /> */}
           <Stack.Screen name="Profile" component={ProfileScreen} />
         </>
       )}

@@ -15,7 +15,7 @@ import { ACCOUNT_ITEMS, ACTIVITY_ITEMS, MENU_VALUES } from './constants';
 
 interface ISettingsScreenProps extends AppStackScreenProps<'Account'> {}
 
-const SettingsScreen: React.FC<ISettingsScreenProps> = ({ navigation }) => {
+const SettingsScreen = ({ navigation }: ISettingsScreenProps) => {
   const {
     theme: { colors },
     themed,

@@ -50,7 +50,7 @@ type IconProps = Omit<ViewProps, 'style'> & BaseIconProps;
  * @param {PressableIconProps} props - The props for the `PressableIcon` component.
  * @returns {JSX.Element} The rendered `PressableIcon` component.
  */
-export function PressableIcon(props: PressableIconProps) {
+export const PressableIcon = (props: PressableIconProps) => {
   const {
     icon,
     color,
@@ -74,7 +74,7 @@ export function PressableIcon(props: PressableIconProps) {
       <Image style={$imageStyle} source={iconRegistry[icon]} />
     </TouchableOpacity>
   );
-}
+};
 
 /**
  * A component to render a registered icon.
@@ -83,7 +83,7 @@ export function PressableIcon(props: PressableIconProps) {
  * @param {IconProps} props - The props for the `Icon` component.
  * @returns {JSX.Element} The rendered `Icon` component.
  */
-export function Icon(props: IconProps) {
+export const Icon = (props: IconProps) => {
   const {
     icon,
     color,
@@ -112,7 +112,7 @@ export function Icon(props: IconProps) {
       <Image style={$imageStyle} source={iconRegistry[icon]} />
     </View>
   );
-}
+};
 
 export const iconRegistry = {
   back: require('@/assets/icons/back.png'),
@@ -124,6 +124,7 @@ export const iconRegistry = {
   login: require('@/assets/icons/login.png'),
   setting2: require('@/assets/icons/setting2.png'),
   arrowLeft: require('@/assets/icons/arrowLeft.png'),
+  editBold: require('@/assets/icons/editBold.png'),
 };
 
 const $imageStyleBase: ImageStyle = {

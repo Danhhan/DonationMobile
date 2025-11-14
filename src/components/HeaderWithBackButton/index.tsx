@@ -11,17 +11,19 @@ interface IHeaderWithBackButtonProps {
   title: string;
 }
 
-const HeaderWithBackButton: React.FC<IHeaderWithBackButtonProps> = ({
+const HeaderWithBackButton = ({
   onBackButtonPress,
   title,
-}) => {
+}: IHeaderWithBackButtonProps) => {
   const { themed } = useAppTheme();
   return (
     <View style={themed($container)}>
       <TouchableWithoutFeedback onPress={onBackButtonPress}>
         <Icon icon="arrowLeft" size={20} />
       </TouchableWithoutFeedback>
-      <Text weight="medium">{title}</Text>
+      <Text size="md" weight="medium">
+        {title}
+      </Text>
     </View>
   );
 };
@@ -30,6 +32,7 @@ const $container: ThemedStyle<ViewStyle> = ({ spacing }) => ({
   flexDirection: 'row',
   alignItems: 'center',
   gap: spacing.md,
+  paddingBottom: spacing.md,
 });
 
 export default HeaderWithBackButton;
