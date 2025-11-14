@@ -3,7 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import { AnimatedBootSplash } from '@/components/BootSplash';
-import { useAuth } from '@/context/AuthContext';
+import { useAuth } from '@/context/AuthProvider';
 import { LoginScreen } from '@/screens/Auth/Login';
 import { RegisterScreen } from '@/screens/Auth/Register';
 import ProfileScreen from '@/screens/Settings/Profile';

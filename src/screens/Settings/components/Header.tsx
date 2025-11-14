@@ -2,7 +2,7 @@ import { View, ViewStyle } from 'react-native';
 
 import Avatar from '@/components/Avatar';
 import { Text } from '@/components/Text';
-import { useAuth } from '@/context/AuthContext';
+import { useAuth } from '@/context/AuthProvider';
 import { useAppTheme } from '@/theme/context';
 import { $styles } from '@/theme/styles';
 import { ThemedStyle } from '@/theme/types';

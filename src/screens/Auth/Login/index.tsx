@@ -8,7 +8,7 @@ import { Input } from '@/components/Input';
 import PageHeader from '@/components/PageHeader';
 import Screen from '@/components/Screen';
 import HTTP_CODES_ENUM from '@/constants/httpCode';
-import { useAuth } from '@/context/AuthContext';
+import { useAuth } from '@/context/AuthProvider';
 import { AppStackScreenProps } from '@/navigators/navigationTypes';
 import { useAppTheme } from '@/theme/context';
 import { ThemedStyle } from '@/theme/types';
@@ -43,17 +43,18 @@ export const LoginScreen = ({ navigation }: LoginScreenProps) => {
   const { mutateAsync: login, isPending } = useAuthLogin({
     mutationConfig: {
       onSuccess: data => {
-        const loginInfo = data?.data;
+        const loginInfo = data?.data as any;
+        console.log('loginInfo :', loginInfo);
         setTokensInfo({
-          token: loginInfo.token,
-          refreshToken: loginInfo.refreshToken,
-          tokenExpires: loginInfo.tokenExpires,
+          token: loginInfo.access,
+          refreshToken: '',
+          tokenExpires: 1,
         });
         saveAuthInfo({
           email,
           password,
         });
-        setUser(loginInfo?.user);
+        // setUser(loginInfo?.user);
       },
       onError: (err: any) => {
         if (err.statusCode === HTTP_CODES_ENUM.UNPROCESSABLE_ENTITY) {
@@ -122,7 +123,7 @@ export const LoginScreen = ({ navigation }: LoginScreenProps) => {
           />
         </View>
         <View style={themed($button)}>
-          <Button isLoading={isPending} onPress={onLogin}>
+          <Button isLoading={isPending} onPress={onLogin} requiredNetwork>
             Login
           </Button>
         </View>

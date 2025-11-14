@@ -7,6 +7,7 @@ import {
   ViewStyle,
 } from 'react-native';
 
+import { useNetwork } from '@/context/NetworkProvider';
 import { useAppTheme } from '@/theme/context';
 import { $styles } from '@/theme/styles';
 import { ThemedStyle } from '@/theme/types';
@@ -27,20 +28,36 @@ interface IButtonProps extends PressableProps {
    * An optional style override useful for padding & margin.
    */
   style?: StyleProp<ViewStyle>;
+  /**
+   * Required network connection.
+   */
+  requiredNetwork?: boolean;
 }
 
 const Button = (props: IButtonProps) => {
   const { themed } = useAppTheme();
 
-  const { children, isLoading, style: $viewStyleOverride } = props;
+  const {
+    children,
+    isLoading,
+    style: $viewStyleOverride,
+    requiredNetwork,
+  } = props;
+
+  const { isConnected } = useNetwork();
+  const isDisabled = requiredNetwork && !isConnected;
 
   function $viewStyle(): StyleProp<ViewStyle> {
-    return [themed($baseViewStyle), $viewStyleOverride];
+    return [
+      themed($baseViewStyle),
+      isDisabled && themed($disabledViewStyle),
+      $viewStyleOverride,
+    ];
   }
 
   return (
     <Pressable
-      disabled={isLoading}
+      disabled={isDisabled || isLoading}
       style={$viewStyle()}
       accessibilityRole="button"
       {...props}
@@ -69,6 +86,10 @@ const $text: ThemedStyle<TextStyle> = ({ colors, typography, spacing }) => ({
   fontSize: 16,
   fontFamily: typography.primary.medium,
   marginLeft: spacing.xxs,
+});
+
+const $disabledViewStyle: ThemedStyle<ViewStyle> = () => ({
+  opacity: 0.5,
 });
 
 export default Button;

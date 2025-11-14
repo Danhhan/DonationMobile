@@ -3,7 +3,7 @@ import { TextStyle, View, ViewStyle } from 'react-native';
 
 import Avatar from '@/components/Avatar';
 import { Text } from '@/components/Text';
-import { useAuth } from '@/context/AuthContext';
+import { useAuth } from '@/context/AuthProvider';
 import { useAppTheme } from '@/theme/context';
 import { ThemedStyle } from '@/theme/types';
 import { getFontFamily } from '@/theme/typography';

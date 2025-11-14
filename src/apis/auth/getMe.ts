@@ -6,7 +6,8 @@ import { IDataResponse } from '@/types/common';
 
 export const getAuthMeFn = async () => {
   try {
-    const response = await instance.get('v1/auth/me');
+    const response = await instance.get('v1/users/profile');
+    // const response = await instance.get('v1/auth/me');
     return response.json<IDataResponse<IUser>>();
   } catch (error) {
     throw error;

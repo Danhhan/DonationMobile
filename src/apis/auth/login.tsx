@@ -18,11 +18,13 @@ const authLoginFn = async (
   data: AuthLoginRequest,
 ): Promise<IDataResponse<AuthLoginResponse>> => {
   try {
+    // v1/auth/login
     const response = await instance
-      .post('v1/auth/login', {
-        json: data,
+      .post('v1/users/token', {
+        json: { ...data, country: 'VN' },
       })
       .json<IDataResponse<AuthLoginResponse>>();
+
     return response;
   } catch (error: any) {
     throw error;

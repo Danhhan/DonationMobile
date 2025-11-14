@@ -55,15 +55,18 @@ export const AuthProvider: FC<PropsWithChildren<AuthProviderProps>> = ({
    */
   const loadData = useCallback(async () => {
     const tokens = loadTokensInfo();
+    console.log('tokens :', tokens);
 
     try {
       if (tokens?.token) {
         const response = await getAuthMeFn();
+        console.log('response :', response);
         setUser(response?.data);
       }
     } catch (error: any) {
+      console.log('error :', error);
       if (error?.response?.status === HTTP_CODES_ENUM.UNAUTHORIZED) {
-        logOut();
+        // logOut();
       }
     } finally {
       setIsLoaded(true);

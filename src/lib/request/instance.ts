@@ -22,10 +22,10 @@ export const createInstance = () => {
         request => {
           const tokens = loadTokensInfo();
           if (tokens?.token) {
-            request.headers.set('Authorization', `Bearer ${tokens?.token}`);
-          }
-          if (__DEV__ && process.env.OFFLINE_MODE === 'true') {
-            throw new Error('Network offline (simulated)');
+            // request.headers.set('Authorization', `Bearer ${tokens?.token}`);
+
+            console.log(' :', `NH ${tokens?.token}`);
+            request.headers.set('Authorization', `NH ${tokens?.token}`);
           }
         },
       ],
@@ -35,15 +35,14 @@ export const createInstance = () => {
             .clone()
             .json()
             .catch(() => ({}));
-
           if (response.status === HTTP_CODES_ENUM.UNAUTHORIZED) {
             eventEmitter.emit(EXPIRED_TOKEN);
+            return;
           }
-
           if (!response.ok) {
-            return Promise.reject(result);
+            console.log('occur error :', response);
+            Promise.reject(response);
           }
-
           return result;
         },
       ],
