@@ -7,7 +7,7 @@ import {
   ViewStyle,
 } from 'react-native';
 
-import { useNetwork } from '@/context/NetworkProvider';
+import useIsOffline from '@/hooks/useIsOffline';
 import { useAppTheme } from '@/theme/context';
 import { $styles } from '@/theme/styles';
 import { ThemedStyle } from '@/theme/types';
@@ -44,8 +44,9 @@ const Button = (props: IButtonProps) => {
     requiredNetwork,
   } = props;
 
-  const { isConnected } = useNetwork();
-  const isDisabled = requiredNetwork && !isConnected;
+  const isOffline = useIsOffline();
+  console.log('isOffline :', isOffline);
+  const isDisabled = requiredNetwork && isOffline;
 
   function $viewStyle(): StyleProp<ViewStyle> {
     return [

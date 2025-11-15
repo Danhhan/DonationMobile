@@ -1,9 +1,12 @@
+import { IUser } from '@/types/auth';
+
 import { TokensInfo } from './type';
 
 import { loadString, remove, saveString } from '.';
 
 const AUTH_LOGIN_STORAGE_KEY = 'authLogin';
 const AUTH_TOKEN_STORAGE_KEY = 'authToken';
+const AUTH_USER_STORAGE_KEY = 'authUser';
 
 export const saveAuthInfo = ({
   email,
@@ -31,4 +34,17 @@ export const loadTokensInfo = () => {
 
 export const removeTokensInfo = () => {
   remove(AUTH_TOKEN_STORAGE_KEY);
+};
+
+export const saveUserInfo = (user: IUser) => {
+  saveString(AUTH_USER_STORAGE_KEY, JSON.stringify(user));
+};
+
+export const getUserInfo = () => {
+  const userInfo = loadString(AUTH_USER_STORAGE_KEY);
+  return userInfo ? JSON.parse(userInfo) : null;
+};
+
+export const removeUserInfo = () => {
+  remove(AUTH_USER_STORAGE_KEY);
 };

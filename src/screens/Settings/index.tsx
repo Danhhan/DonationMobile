@@ -40,7 +40,6 @@ const SettingsScreen = ({ navigation }: ISettingsScreenProps) => {
                   icon={item.icon}
                   title={item.title}
                   onPress={() => {
-                    console.log(item.value);
                     if (item.value === MENU_VALUES.PROFILE) {
                       navigation.navigate('Profile');
                       return;

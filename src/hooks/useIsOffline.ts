@@ -31,31 +31,28 @@ export default function useIsOffline({
   const handleNetworkStateChange = useCallback(
     (state: NetInfoState) => {
       const newIsOnline = getIsOnline(state);
-      console.log('newIsOnline :', newIsOnline);
       const oldIsOnline = isOnlineRef.current;
 
-      if (newIsOnline === oldIsOnline || oldIsOnline === null) return;
+      // Chỉ kiểm tra nếu trạng thái thực sự thay đổi
+      if (newIsOnline === oldIsOnline) return;
 
       if (newIsOnline) {
-        // We came back online within the debounce window, clear any pending offline update
+        // Khi có mạng trở lại
         if (offlineTimerRef.current) {
           clearTimeout(offlineTimerRef.current);
           offlineTimerRef.current = null;
-        } else {
-          // analytics.track(analytics.event.networkStatusReconnected);
         }
         updateIsOnline(true);
       } else {
+        // Khi mất mạng
         if (debounceMs > 0) {
           if (!offlineTimerRef.current) {
             offlineTimerRef.current = setTimeout(() => {
               offlineTimerRef.current = null;
-              // analytics.track(analytics.event.networkStatusOffline);
               updateIsOnline(false);
             }, debounceMs);
           }
         } else {
-          // analytics.track(analytics.event.networkStatusOffline);
           updateIsOnline(false);
         }
       }

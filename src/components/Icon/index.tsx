@@ -125,6 +125,7 @@ export const iconRegistry = {
   setting2: require('@/assets/icons/setting2.png'),
   arrowLeft: require('@/assets/icons/arrowLeft.png'),
   editBold: require('@/assets/icons/editBold.png'),
+  ladybug: require('@/assets/icons/ladybug.png'),
 };
 
 const $imageStyleBase: ImageStyle = {

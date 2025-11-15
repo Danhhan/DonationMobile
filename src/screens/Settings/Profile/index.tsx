@@ -11,6 +11,7 @@ import { ThemedStyle } from '@/theme/types';
 
 import { ProfileMenuItems } from '../components/ProfileMenuItems';
 import { Section } from '../components/Section';
+import { useState } from 'react';
 
 interface IProfileScreenProps extends AppStackScreenProps<'Profile'> {}
 
@@ -19,6 +20,11 @@ const ProfileScreen: React.FC<IProfileScreenProps> = ({ navigation }) => {
     theme: { colors },
     themed,
   } = useAppTheme();
+  const [shouldThrow, setShouldThrow] = useState(false);
+
+  if (shouldThrow) {
+    throw new Error('Test error for ErrorBoundary');
+  }
 
   const publicMenuItems = [
     {
@@ -44,7 +50,9 @@ const ProfileScreen: React.FC<IProfileScreenProps> = ({ navigation }) => {
     },
     {
       description: 'Date of birth',
-      action: () => {},
+      action: () => {
+        setShouldThrow(true);
+      },
     },
     {
       description: 'Phone number',

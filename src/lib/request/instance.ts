@@ -24,7 +24,6 @@ export const createInstance = () => {
           if (tokens?.token) {
             // request.headers.set('Authorization', `Bearer ${tokens?.token}`);
 
-            console.log(' :', `NH ${tokens?.token}`);
             request.headers.set('Authorization', `NH ${tokens?.token}`);
           }
         },

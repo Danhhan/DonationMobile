@@ -3,6 +3,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import { AnimatedBootSplash } from '@/components/BootSplash';
+import { ErrorBoundary } from '@/components/Screen/ErrorScreen/ErrorBoundary';
+import Config from '@/config';
 import { useAuth } from '@/context/AuthProvider';
 import { LoginScreen } from '@/screens/Auth/Login';
 import { RegisterScreen } from '@/screens/Auth/Register';
@@ -74,7 +76,9 @@ export const AppNavigator = (props: NavigationProps) => {
 
   return (
     <NavigationContainer theme={navigationTheme} {...props}>
-      <AppStack />
+      <ErrorBoundary catchErrors={Config.catchErrors}>
+        <AppStack />
+      </ErrorBoundary>
     </NavigationContainer>
   );
 };

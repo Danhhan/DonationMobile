@@ -11,10 +11,14 @@ import BootSplash from 'react-native-bootsplash';
 
 import { getAuthMeFn } from '@/apis/auth/getMe';
 import HTTP_CODES_ENUM from '@/constants/httpCode';
+import useIsOffline from '@/hooks/useIsOffline';
 import { IUser } from '@/types/auth';
 import eventEmitter, { EXPIRED_TOKEN } from '@/utils/eventEmitter';
 import {
+  getUserInfo,
   loadTokensInfo,
+  removeUserInfo,
+  saveUserInfo as saveUserInfoToStorage,
   saveTokensInfo as setTokensInfoToStorage,
 } from '@/utils/storage/auth';
 import { TokensInfo } from '@/utils/storage/type';
@@ -37,6 +41,9 @@ export const AuthProvider: FC<PropsWithChildren<AuthProviderProps>> = ({
 }) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [user, setUser] = useState<IUser | null>(null);
+  const isOffline = useIsOffline();
+
+  const isAuthenticated = Boolean(loadTokensInfo()?.token);
 
   const setTokensInfo = useCallback((tokensInfo: TokensInfo) => {
     setTokensInfoToStorage(tokensInfo);
@@ -48,41 +55,46 @@ export const AuthProvider: FC<PropsWithChildren<AuthProviderProps>> = ({
 
   const logOut = useCallback(() => {
     setTokensInfo(null);
+    removeUserInfo();
   }, [setTokensInfo]);
 
   /**
    * NOTE: This function to handle init app and after login
    */
   const loadData = useCallback(async () => {
+    if (isOffline) {
+      const cachedUser = getUserInfo();
+      if (cachedUser) {
+        setUser(cachedUser);
+      }
+      setIsLoaded(true);
+      return;
+    }
     const tokens = loadTokensInfo();
-    console.log('tokens :', tokens);
-
     try {
       if (tokens?.token) {
         const response = await getAuthMeFn();
-        console.log('response :', response);
         setUser(response?.data);
+        saveUserInfoToStorage(response?.data);
       }
     } catch (error: any) {
-      console.log('error :', error);
       if (error?.response?.status === HTTP_CODES_ENUM.UNAUTHORIZED) {
-        // logOut();
+        logOut();
       }
     } finally {
       setIsLoaded(true);
       await BootSplash.hide({ fade: true });
     }
-  }, [logOut]);
+  }, [logOut, isOffline]);
 
   useEffect(() => {
     loadData();
   }, [loadData]);
+  // IF network offline we will load user info from storage
 
   useEffect(() => {
     eventEmitter.addListener(EXPIRED_TOKEN, () => {
       logOut();
-
-      console.log('listen here :');
     });
     return () => {
       eventEmitter.removeListener(EXPIRED_TOKEN, () => {
@@ -93,7 +105,7 @@ export const AuthProvider: FC<PropsWithChildren<AuthProviderProps>> = ({
   }, []);
 
   const value = {
-    isAuthenticated: Boolean(user),
+    isAuthenticated,
     logOut,
     user,
     setUser,
