@@ -1,9 +1,11 @@
+import { useState } from 'react';
 import { Alert, ScrollView, View, ViewStyle } from 'react-native';
 
 import Avatar from '@/components/Avatar';
 import HeaderWithBackButton from '@/components/HeaderWithBackButton';
 import { Icon } from '@/components/Icon';
 import Screen from '@/components/Screen';
+import { useAuth } from '@/context/AuthProvider';
 import { AppStackScreenProps } from '@/navigators/navigationTypes';
 import { useAppTheme } from '@/theme/context';
 import { $styles } from '@/theme/styles';
@@ -11,7 +13,6 @@ import { ThemedStyle } from '@/theme/types';
 
 import { ProfileMenuItems } from '../components/ProfileMenuItems';
 import { Section } from '../components/Section';
-import { useState } from 'react';
 
 interface IProfileScreenProps extends AppStackScreenProps<'Profile'> {}
 
@@ -21,7 +22,7 @@ const ProfileScreen: React.FC<IProfileScreenProps> = ({ navigation }) => {
     themed,
   } = useAppTheme();
   const [shouldThrow, setShouldThrow] = useState(false);
-
+  const { user } = useAuth();
   if (shouldThrow) {
     throw new Error('Test error for ErrorBoundary');
   }
@@ -29,14 +30,14 @@ const ProfileScreen: React.FC<IProfileScreenProps> = ({ navigation }) => {
   const publicMenuItems = [
     {
       title: 'Display name',
-      description: 'John Doe',
+      description: user?.fullName || '--',
       action: () => {
         Alert.alert('Display name');
       },
     },
     {
       title: 'Email',
-      description: 'john.doe@example.com',
+      description: user?.email || '--',
       action: () => {},
     },
   ];

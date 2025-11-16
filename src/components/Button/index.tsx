@@ -45,7 +45,6 @@ const Button = (props: IButtonProps) => {
   } = props;
 
   const isOffline = useIsOffline();
-  console.log('isOffline :', isOffline);
   const isDisabled = requiredNetwork && isOffline;
 
   function $viewStyle(): StyleProp<ViewStyle> {

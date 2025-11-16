@@ -7,6 +7,8 @@ export const $styles = {
   flex: { display: 'flex' } as ViewStyle,
   flex1: { flex: 1 } as ViewStyle,
   flexWrap: { flexWrap: 'wrap' } as ViewStyle,
+  row: { flexDirection: 'row' } as ViewStyle,
+  center: { alignItems: 'center', justifyContent: 'center' } as ViewStyle,
 
   container: {
     paddingTop: spacing.lg + spacing.xl,

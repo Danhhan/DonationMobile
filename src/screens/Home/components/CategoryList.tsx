@@ -10,7 +10,7 @@ import { Text } from '@/components/Text';
 import { useAppTheme } from '@/theme/context';
 import { ThemedStyle } from '@/theme/types';
 import { getFontFamily } from '@/theme/typography';
-import { ICategory } from '@/types/donation';
+import { ICategory } from '@/types/category';
 
 interface ICategoryListProps {
   dataList: ICategory[];
@@ -26,7 +26,6 @@ const CategoryList = ({
   const { themed } = useAppTheme();
   return (
     <View>
-      <Text style={themed($title)}>Select Category</Text>
       <ScrollView
         horizontal
         style={themed($categoryList)}
@@ -35,7 +34,7 @@ const CategoryList = ({
         {dataList.map((item, index) => {
           return (
             <Pressable
-              key={item.categoryId}
+              key={item.id}
               style={[
                 themed($categoryItem),
                 selectedIdx === index && themed($categoryItemActive),
@@ -58,12 +57,6 @@ const CategoryList = ({
   );
 };
 
-const $title: ThemedStyle<TextStyle> = ({ colors }) => ({
-  fontSize: 18,
-  fontFamily: getFontFamily('SpaceGrotesk', '600'),
-  color: colors.text,
-});
-
 const $categoryList: ThemedStyle<ViewStyle> = ({ spacing }) => ({
   marginTop: spacing.md,
 });
@@ -74,6 +67,8 @@ const $categoryItem: ThemedStyle<ViewStyle> = ({ colors }) => ({
   paddingHorizontal: 38,
   borderRadius: 50,
   marginRight: 10,
+  minHeight: 60,
+  minWidth: 140,
 });
 
 const $categoryItemActive: ThemedStyle<ViewStyle> = ({ colors }) => ({

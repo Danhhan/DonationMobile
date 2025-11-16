@@ -11,6 +11,7 @@ import { getFontFamily } from '@/theme/typography';
 const Header = () => {
   const { themed } = useAppTheme();
   const { user } = useAuth();
+  console.log('user :', user);
   return (
     <View style={themed($header)}>
       <View>

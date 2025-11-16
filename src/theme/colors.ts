@@ -41,6 +41,7 @@ const palette = {
   label: '#36455A',
 
   gray100: '#F3F5F9',
+  gray200: '#E5E7EB',
 } as const;
 
 export const colors = {

@@ -1,13 +1,9 @@
-export interface ICategory {
-  categoryId: number;
-  name: string;
-}
+import { IEntity } from './common';
 
-export interface IDonation {
+export interface IDonation extends IEntity {
   name: string;
   description: string;
   image: string;
-  donationItemId: number;
   categoryIds: number[];
   price: string;
 }

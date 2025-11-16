@@ -30,6 +30,7 @@ export type AuthContextType = {
   setUser: (user: IUser | null) => void;
   setTokensInfo: (tokensInfo: TokensInfo) => void;
   isLoaded?: boolean;
+  onUpdateIsAuthenticated: (value: boolean) => void;
 };
 
 export const AuthContext = createContext<AuthContextType | null>(null);
@@ -42,8 +43,7 @@ export const AuthProvider: FC<PropsWithChildren<AuthProviderProps>> = ({
   const [isLoaded, setIsLoaded] = useState(false);
   const [user, setUser] = useState<IUser | null>(null);
   const isOffline = useIsOffline();
-
-  const isAuthenticated = Boolean(loadTokensInfo()?.token);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   const setTokensInfo = useCallback((tokensInfo: TokensInfo) => {
     setTokensInfoToStorage(tokensInfo);
@@ -58,6 +58,13 @@ export const AuthProvider: FC<PropsWithChildren<AuthProviderProps>> = ({
     removeUserInfo();
   }, [setTokensInfo]);
 
+  const onUpdateIsAuthenticated = useCallback(
+    (value: boolean) => {
+      setIsAuthenticated(value);
+    },
+    [setIsAuthenticated],
+  );
+
   /**
    * NOTE: This function to handle init app and after login
    */
@@ -71,6 +78,7 @@ export const AuthProvider: FC<PropsWithChildren<AuthProviderProps>> = ({
       return;
     }
     const tokens = loadTokensInfo();
+    console.log('tokens :', tokens);
     try {
       if (tokens?.token) {
         const response = await getAuthMeFn();
@@ -104,13 +112,17 @@ export const AuthProvider: FC<PropsWithChildren<AuthProviderProps>> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const finalIsAuthenticated =
+    isAuthenticated || Boolean(loadTokensInfo()?.token);
+
   const value = {
-    isAuthenticated,
+    isAuthenticated: finalIsAuthenticated,
     logOut,
     user,
     setUser,
     setTokensInfo,
     isLoaded,
+    onUpdateIsAuthenticated,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

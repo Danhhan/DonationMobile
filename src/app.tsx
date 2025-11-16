@@ -12,7 +12,6 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Toaster } from 'sonner-native';
 
 import { AuthProvider } from './context/AuthProvider';
-import { NetworkProvider } from './context/NetworkProvider';
 import { queryConfig } from './lib/reactQuery';
 import { AppNavigator } from './navigators/AppNavigator';
 import { ThemeProvider } from './theme/context';
@@ -25,18 +24,16 @@ function App() {
   return (
     <SafeAreaProvider>
       <GestureHandlerRootView>
-        <NetworkProvider>
-          <QueryClientProvider client={queryClient}>
-            <KeyboardProvider>
-              <AuthProvider>
-                <ThemeProvider>
-                  <AppNavigator />
-                  <Toaster />
-                </ThemeProvider>
-              </AuthProvider>
-            </KeyboardProvider>
-          </QueryClientProvider>
-        </NetworkProvider>
+        <QueryClientProvider client={queryClient}>
+          <KeyboardProvider>
+            <AuthProvider>
+              <ThemeProvider>
+                <AppNavigator />
+                <Toaster />
+              </ThemeProvider>
+            </AuthProvider>
+          </KeyboardProvider>
+        </QueryClientProvider>
       </GestureHandlerRootView>
     </SafeAreaProvider>
   );

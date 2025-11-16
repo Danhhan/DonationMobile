@@ -12,7 +12,8 @@ import { useAppTheme } from '@/theme/context';
 import { $styles } from '@/theme/styles';
 import { ThemedStyle } from '@/theme/types';
 import { getFontFamily } from '@/theme/typography';
-import { ICategory, IDonation } from '@/types/donation';
+import { ICategory } from '@/types/category';
+import { IDonation } from '@/types/donation';
 
 interface IDonationCardListProps {
   dataList: IDonation[];
@@ -27,14 +28,14 @@ const DonationCardList = ({
   return (
     <View style={themed($donationList)}>
       {dataList?.map(item => {
-        const { name, price, categoryIds, donationItemId, image } = item || {};
+        const { name, price, categoryIds, id, image } = item || {};
 
         const category = categoryList.find(categoryItem =>
-          categoryIds?.includes(categoryItem.categoryId),
+          categoryIds?.includes(categoryItem.id),
         );
 
         return (
-          <Pressable key={donationItemId} style={themed($donationItem)}>
+          <Pressable key={id} style={themed($donationItem)}>
             <View>
               {category && (
                 <View style={themed($categoryBadge)}>
@@ -112,7 +113,7 @@ const $categoryBadgeText: ThemedStyle<TextStyle> = ({ colors }) => ({
 });
 
 const $donationImage: ThemedStyle<ImageStyle> = () => ({
-  height: 170,
+  minHeight: 170,
   width: '100%',
   borderRadius: 20,
 });

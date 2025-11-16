@@ -22,9 +22,7 @@ export const createInstance = () => {
         request => {
           const tokens = loadTokensInfo();
           if (tokens?.token) {
-            // request.headers.set('Authorization', `Bearer ${tokens?.token}`);
-
-            request.headers.set('Authorization', `NH ${tokens?.token}`);
+            request.headers.set('Authorization', `Bearer ${tokens?.token}`);
           }
         },
       ],
@@ -34,13 +32,15 @@ export const createInstance = () => {
             .clone()
             .json()
             .catch(() => ({}));
-          if (response.status === HTTP_CODES_ENUM.UNAUTHORIZED) {
+          const isLogin = response?.url.includes('login');
+          if (response.status === HTTP_CODES_ENUM.UNAUTHORIZED && !isLogin) {
             eventEmitter.emit(EXPIRED_TOKEN);
             return;
           }
+
           if (!response.ok) {
-            console.log('occur error :', response);
-            Promise.reject(response);
+            console.error('occur error when fetching', result);
+            return Promise.reject(result);
           }
           return result;
         },

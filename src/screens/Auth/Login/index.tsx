@@ -26,11 +26,13 @@ interface IErrorValidate {
 }
 
 export const LoginScreen = ({ navigation }: LoginScreenProps) => {
-  const { setTokensInfo, setUser } = useAuth();
+  const { setTokensInfo, onUpdateIsAuthenticated } = useAuth();
   const { themed } = useAppTheme();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isSubmitted, setIsSubmitted] = useState(false);
+
+  console.log('render login :');
 
   useEffect(() => {
     const authInfo = loadAuthInfo();
@@ -43,10 +45,9 @@ export const LoginScreen = ({ navigation }: LoginScreenProps) => {
   const { mutateAsync: login, isPending } = useAuthLogin({
     mutationConfig: {
       onSuccess: data => {
-        const loginInfo = data?.data as any;
-        console.log('loginInfo :', loginInfo);
+        const loginInfo = data?.data;
         setTokensInfo({
-          token: loginInfo.access,
+          token: loginInfo.token,
           refreshToken: '',
           tokenExpires: 1,
         });
@@ -54,7 +55,7 @@ export const LoginScreen = ({ navigation }: LoginScreenProps) => {
           email,
           password,
         });
-        // setUser(loginInfo?.user);
+        onUpdateIsAuthenticated(true);
       },
       onError: (err: any) => {
         if (err.statusCode === HTTP_CODES_ENUM.UNPROCESSABLE_ENTITY) {
