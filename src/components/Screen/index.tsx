@@ -83,7 +83,6 @@ const Screen = (props: IScreenProps) => {
       >
         {children}
       </KeyboardAvoidingView>
-      {/* {children} */}
     </View>
   );
 };

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
@@ -24,17 +24,12 @@ const AppStack = () => {
     theme: { colors },
   } = useAppTheme();
 
-  useEffect(() => {
-    if (isLoaded) {
-      setVisible(false);
-    }
-  }, [isLoaded]);
-
   if (visible) {
     return (
       <AnimatedBootSplash
         onAnimationEnd={() => {
           if (!isLoaded) {
+            console.log('setVisible(false)');
             setVisible(false);
           }
         }}

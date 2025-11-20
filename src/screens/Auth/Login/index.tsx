@@ -26,13 +26,11 @@ interface IErrorValidate {
 }
 
 export const LoginScreen = ({ navigation }: LoginScreenProps) => {
-  const { setTokensInfo, onUpdateIsAuthenticated } = useAuth();
+  const { setTokensInfo, onUpdateIsAuthenticated, setUser } = useAuth();
   const { themed } = useAppTheme();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isSubmitted, setIsSubmitted] = useState(false);
-
-  console.log('render login :');
 
   useEffect(() => {
     const authInfo = loadAuthInfo();
@@ -56,8 +54,10 @@ export const LoginScreen = ({ navigation }: LoginScreenProps) => {
           password,
         });
         onUpdateIsAuthenticated(true);
+        setUser(loginInfo?.user);
       },
       onError: (err: any) => {
+        console.log('err :', err);
         if (err.statusCode === HTTP_CODES_ENUM.UNPROCESSABLE_ENTITY) {
           const errorRes = (err as IErrorForm).errors;
           if (errorRes) {

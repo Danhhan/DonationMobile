@@ -26,7 +26,6 @@ const authLoginFn = async (
 
     return response;
   } catch (error: any) {
-    console.log('error :', error);
     throw error;
   }
 };

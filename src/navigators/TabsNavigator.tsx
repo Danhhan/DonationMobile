@@ -4,6 +4,7 @@ import { RouteProp } from '@react-navigation/native';
 import { Icon, IconTypes } from '@/components/Icon';
 import { HomeScreen } from '@/screens/Home';
 import SettingsScreen from '@/screens/Settings';
+import { useAppTheme } from '@/theme/context';
 
 import { TabsParamList } from './navigationTypes';
 
@@ -34,12 +35,16 @@ const renderTabIcon = ({
   return <Icon icon={iconName} size={size} color={color} />;
 };
 const TabsNavigator = () => {
+  const {
+    theme: { colors },
+  } = useAppTheme();
+
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
         headerShown: false,
-        tabBarActiveTintColor: '#007bff',
-        tabBarInactiveTintColor: '#888',
+        tabBarActiveTintColor: colors.palette.primary500,
+        tabBarInactiveTintColor: colors.palette.neutral500,
         tabBarIcon: ({ color, size }) => renderTabIcon({ route, color, size }),
       })}
     >

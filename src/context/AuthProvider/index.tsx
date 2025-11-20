@@ -45,9 +45,15 @@ export const AuthProvider: FC<PropsWithChildren<AuthProviderProps>> = ({
   const isOffline = useIsOffline();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
+  const onUpdateIsAuthenticated = useCallback(
+    (value: boolean) => {
+      setIsAuthenticated(value);
+    },
+    [setIsAuthenticated],
+  );
+
   const setTokensInfo = useCallback((tokensInfo: TokensInfo) => {
     setTokensInfoToStorage(tokensInfo);
-
     if (!tokensInfo) {
       setUser(null);
     }
@@ -56,29 +62,23 @@ export const AuthProvider: FC<PropsWithChildren<AuthProviderProps>> = ({
   const logOut = useCallback(() => {
     setTokensInfo(null);
     removeUserInfo();
-  }, [setTokensInfo]);
-
-  const onUpdateIsAuthenticated = useCallback(
-    (value: boolean) => {
-      setIsAuthenticated(value);
-    },
-    [setIsAuthenticated],
-  );
+    onUpdateIsAuthenticated(false);
+  }, [setTokensInfo, onUpdateIsAuthenticated]);
 
   /**
    * NOTE: This function to handle init app and after login
    */
   const loadData = useCallback(async () => {
+    setIsLoaded(true);
     if (isOffline) {
       const cachedUser = getUserInfo();
       if (cachedUser) {
         setUser(cachedUser);
       }
-      setIsLoaded(true);
+      setIsLoaded(false);
       return;
     }
     const tokens = loadTokensInfo();
-    console.log('tokens :', tokens);
     try {
       if (tokens?.token) {
         const response = await getAuthMeFn();
@@ -90,7 +90,7 @@ export const AuthProvider: FC<PropsWithChildren<AuthProviderProps>> = ({
         logOut();
       }
     } finally {
-      setIsLoaded(true);
+      setIsLoaded(false);
       await BootSplash.hide({ fade: true });
     }
   }, [logOut, isOffline]);

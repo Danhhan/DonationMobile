@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { useInfiniteQuery } from '@tanstack/react-query';
 
 import { instance } from '@/lib/request/instance';
 import { IDataResponse } from '@/types/common';
@@ -23,9 +23,23 @@ export const getDonationsFn = async (searchParams?: any) => {
 };
 
 export const useDonations = (searchParams?: any) => {
-  const { data, isLoading, error } = useQuery({
+  return useInfiniteQuery({
     queryKey: ['donations', searchParams],
-    queryFn: () => getDonationsFn(searchParams),
+    async queryFn({ pageParam = 1 }) {
+      const res = await instance.get('v1/donations', {
+        searchParams: {
+          ...searchParams,
+          page: pageParam,
+          limit: 4,
+        },
+      });
+      return res.json<IDataResponse<IDonation[]>>();
+    },
+    initialPageParam: 1,
+    getNextPageParam: lastPage => {
+      console.log('lastPage?.meta?.page :', lastPage?.meta?.page);
+      const hasLoadMore = lastPage?.meta?.page < lastPage?.meta?.totalPages;
+      return hasLoadMore ? lastPage?.meta?.page + 1 : undefined;
+    },
   });
-  return { data, isLoading, error };
 };
